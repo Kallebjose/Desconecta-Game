@@ -1,6 +1,8 @@
 package com.KS.desconectagame.cadastro
 
 import android.os.Bundle
+import android.text.InputType
+import android.view.MotionEvent
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -24,11 +26,13 @@ class CadastroActivity : AppCompatActivity() {
 
     private lateinit var db: DesconectaBD
 
+    private var senhaVisivel = false
+    private var senhaCVisivel = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cadastro)
 
-        // Inicializar os campos
         nome = findViewById(R.id.cad_nome)
         idade = findViewById(R.id.cad_idade)
         email = findViewById(R.id.cad_email)
@@ -37,8 +41,54 @@ class CadastroActivity : AppCompatActivity() {
         senhaC = findViewById(R.id.cad_senhaC)
         botaoCadastro = findViewById(R.id.bt_cadastro)
 
-        // Inicializar o banco de dados
         db = DesconectaBD.getDatabase(this)
+
+        // Mostrar/Ocultar senha
+        senha.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawableEnd = 2
+                val bounds = senha.compoundDrawables[drawableEnd]?.bounds
+                if (bounds != null && event.rawX >= (senha.right - bounds.width())) {
+                    senhaVisivel = !senhaVisivel
+                    senha.inputType = if (senhaVisivel)
+                        InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                    else
+                        InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+
+                    senha.setCompoundDrawablesWithIntrinsicBounds(
+                        0, 0,
+                        if (senhaVisivel) R.drawable.ic_eye_open else R.drawable.ic_eye_closed, 0
+                    )
+                    senha.setSelection(senha.text.length)
+                    return@setOnTouchListener true
+                }
+            }
+            false
+        }
+
+
+        // Mostrar/Ocultar senha
+        senhaC.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawableEnd = 2
+                val bounds = senhaC.compoundDrawables[drawableEnd]?.bounds
+                if (bounds != null && event.rawX >= (senhaC.right - bounds.width())) {
+                    senhaCVisivel = !senhaCVisivel
+                    senhaC.inputType = if (senhaCVisivel)
+                        InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                    else
+                        InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+
+                    senhaC.setCompoundDrawablesWithIntrinsicBounds(
+                        0, 0,
+                        if (senhaCVisivel) R.drawable.ic_eye_open else R.drawable.ic_eye_closed, 0
+                    )
+                    senhaC.setSelection(senhaC.text.length)
+                    return@setOnTouchListener true
+                }
+            }
+            false
+        }
 
         botaoCadastro.setOnClickListener {
             val nomeText = nome.text.toString()
@@ -48,9 +98,8 @@ class CadastroActivity : AppCompatActivity() {
             val senhaText = senha.text.toString()
             val senhaConfirm = senhaC.text.toString()
 
-            // Verificação básica
-            if (nomeText.isBlank() || idadeText.isBlank() || emailText.isBlank() ||
-                emailConfirm.isBlank() || senhaText.isBlank() || senhaConfirm.isBlank()) {
+            if (nomeText.isBlank() || idadeText.isBlank() || emailText.isBlank()
+                || emailConfirm.isBlank() || senhaText.isBlank() || senhaConfirm.isBlank()) {
                 Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -71,7 +120,6 @@ class CadastroActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Inserir no banco usando coroutine
             CoroutineScope(Dispatchers.IO).launch {
                 val novoUsuario = Usuario(
                     nome = nomeText,
@@ -84,7 +132,7 @@ class CadastroActivity : AppCompatActivity() {
 
                 runOnUiThread {
                     Toast.makeText(this@CadastroActivity, "Usuário cadastrado com sucesso!", Toast.LENGTH_LONG).show()
-                    finish() // Fecha a activity e volta pra tela anterior
+                    finish()
                 }
             }
         }

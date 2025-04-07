@@ -36,7 +36,12 @@
         android:padding="12dp"
         android:layout_marginTop="35dp"
         android:textColor="@android:color/black"
-        android:textColorHint="@android:color/black" />
+        android:textColorHint="@android:color/black"
+        android:inputType="textPassword"
+        android:drawableEnd="@drawable/ic_eye_closed"
+        android:paddingEnd="16dp"
+        />
+
 
     <Button
         android:id="@+id/bt_logar"

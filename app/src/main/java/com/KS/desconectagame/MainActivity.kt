@@ -2,6 +2,8 @@ package com.KS.desconectagame
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
+import android.view.MotionEvent
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -35,6 +37,35 @@ class MainActivity : AppCompatActivity() {
 
         db = DesconectaBD.getDatabase(this)
         usuarioDao = db.usuarioDao()
+
+        // Lógica para mostrar/ocultar senha
+        senhaEdit.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawableEndIndex = 2 // posição do drawableEnd
+                val drawable = senhaEdit.compoundDrawables[drawableEndIndex]
+                val bounds = drawable?.bounds
+
+                if (bounds != null && event.rawX >= (senhaEdit.right - bounds.width() - senhaEdit.paddingEnd)) {
+                    val isVisible = senhaEdit.inputType == (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
+
+                    if (isVisible) {
+                        senhaEdit.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                        senhaEdit.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_eye_closed, 0)
+                    } else {
+                        senhaEdit.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                        senhaEdit.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_eye_open, 0)
+                    }
+
+                    // Manter o cursor no fim
+                    senhaEdit.setSelection(senhaEdit.text.length)
+                    true
+                } else {
+                    false
+                }
+            } else {
+                false
+            }
+        }
 
         logarButton.setOnClickListener {
             val email = emailEdit.text.toString()
