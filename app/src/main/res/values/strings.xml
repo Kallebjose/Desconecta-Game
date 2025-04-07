@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">DesconectaGame</string>
+    <string name="title_activity_cadastro">CadastroActivity</string>
 
 </resources>

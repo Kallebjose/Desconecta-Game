@@ -49,6 +49,7 @@
         android:textColor="@color/black"/>
 
     <TextView
+        android:id="@+id/txt_cadastro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -57,5 +58,17 @@
         android:textColor="@color/texto_laranja"
         android:textSize="18dp"
         android:layout_marginTop="12dp" />
+
+    <TextView
+        android:id="@+id/txt_verUsuarios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="Listar cadastros"
+        android:textColor="@color/texto_laranja"
+        android:textSize="18dp"
+        android:layout_marginTop="12dp" />
+
 
 </LinearLayout>
