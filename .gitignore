@@ -1,15 +1,38 @@
+
+# Arquivos e pastas do Android Studio
 *.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+.gradle/
+.idea/
+.idea/caches
+.idea/libraries
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+
+# Arquivos específicos do sistema
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+Thumbs.db
+
+# Arquivos gerados automaticamente
+build/
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.ap_
+*.log
+
+# Configurações locais
 local.properties
+
+# Arquivos sensíveis (NUNCA subir pro GitHub)
+google-services.json
+*.jks
+*.keystore
+
+# Jetpack Compose cache
+.compose-cache/
+
+# Outros editores
+.vscode/
