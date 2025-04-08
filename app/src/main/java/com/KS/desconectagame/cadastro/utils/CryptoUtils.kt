@@ -1,4 +1,4 @@
-package com.KS.desconectagame.util
+package com.KS.desconectagame.cadastro.utils
 
 import java.security.MessageDigest
 

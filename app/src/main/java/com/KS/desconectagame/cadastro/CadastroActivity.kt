@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.KS.desconectagame.R
 import com.KS.desconectagame.Usuario.DesconectaBD
 import com.KS.desconectagame.Usuario.Usuario
-import com.KS.desconectagame.util.CryptoUtils
+import com.KS.desconectagame.cadastro.utils.CryptoUtils
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

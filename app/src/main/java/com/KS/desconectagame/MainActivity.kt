@@ -13,7 +13,7 @@ import com.KS.desconectagame.Usuario.DesconectaBD
 import com.KS.desconectagame.Usuario.UsuarioDao
 import com.KS.desconectagame.cadastro.CadastroActivity
 import com.KS.desconectagame.cadastro.UsuariosActivity
-import com.KS.desconectagame.util.CryptoUtils
+import com.KS.desconectagame.cadastro.utils.CryptoUtils
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
