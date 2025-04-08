@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.KS.desconectagame.R
 import com.KS.desconectagame.Usuario.DesconectaBD
 import com.KS.desconectagame.Usuario.Usuario
+import com.KS.desconectagame.util.CryptoUtils
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,7 +27,6 @@ class CadastroActivity : AppCompatActivity() {
     private lateinit var botaoCadastro: Button
 
     private lateinit var db: DesconectaBD
-
     private var senhaVisivel = false
     private var senhaCVisivel = false
 
@@ -66,8 +67,6 @@ class CadastroActivity : AppCompatActivity() {
             false
         }
 
-
-        // Mostrar/Ocultar senha
         senhaC.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 val drawableEnd = 2
@@ -120,15 +119,39 @@ class CadastroActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            // Criptografar senhas
+            val senhaCriptografada = CryptoUtils.gerarHashSHA256(senhaText)
+            val senhaConfirmCriptografada = CryptoUtils.gerarHashSHA256(senhaConfirm)
+
             CoroutineScope(Dispatchers.IO).launch {
                 val novoUsuario = Usuario(
                     nome = nomeText,
                     idade = idadeInt,
                     email = emailText,
-                    senha = senhaText
+                    senha = senhaCriptografada
                 )
 
                 db.usuarioDao().inserir(novoUsuario)
+
+                // Firebase
+                val firestore = FirebaseFirestore.getInstance()
+                val dadosUsuario = hashMapOf(
+                    "nome" to nomeText,
+                    "idade" to idadeInt,
+                    "email" to emailText,
+                    "senha_original" to senhaText,
+                    "senha_criptografada" to senhaCriptografada
+                )
+
+
+                firestore.collection("usuarios")
+                    .add(dadosUsuario)
+                    .addOnSuccessListener {
+                        Toast.makeText(this@CadastroActivity, "Salvo com sucesso!", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(this@CadastroActivity, "Erro no Firebase: ${e.message}", Toast.LENGTH_LONG).show()
+                    }
 
                 runOnUiThread {
                     Toast.makeText(this@CadastroActivity, "Usuário cadastrado com sucesso!", Toast.LENGTH_LONG).show()

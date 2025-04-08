@@ -13,9 +13,12 @@ import com.KS.desconectagame.Usuario.DesconectaBD
 import com.KS.desconectagame.Usuario.UsuarioDao
 import com.KS.desconectagame.cadastro.CadastroActivity
 import com.KS.desconectagame.cadastro.UsuariosActivity
+import com.KS.desconectagame.util.CryptoUtils
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +31,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
+
+        val firestore = FirebaseFirestore.getInstance()
 
         emailEdit = findViewById(R.id.email)
         senhaEdit = findViewById(R.id.senha)
@@ -77,7 +82,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             CoroutineScope(Dispatchers.IO).launch {
-                val usuario = usuarioDao.fazerLogin(email, senha)
+                val senhaCriptografada = CryptoUtils.gerarHashSHA256(senha)
+                val usuario = usuarioDao.fazerLogin(email, senhaCriptografada)
 
                 runOnUiThread {
                     if (usuario != null) {
