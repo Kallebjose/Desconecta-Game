@@ -31,5 +31,8 @@ interface UsuarioDao {
     @Query("SELECT * FROM usuarios WHERE email = :email AND senha = :senha")
     fun buscarPorEmailSenha(email: String, senha: String): Usuario?
 
+    @Query("SELECT * FROM usuarios WHERE email = :email LIMIT 1")
+    fun buscarUsuarioPorEmail(email: String): Usuario?
+
 }
 

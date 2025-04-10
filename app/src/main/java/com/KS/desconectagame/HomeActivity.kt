@@ -12,5 +12,9 @@ class HomeActivity : AppCompatActivity() {
         val primeiroNome = intent.getStringExtra("primeiroNome") ?: "usuário"
         val boasVindasText = findViewById<TextView>(R.id.tv_boas_vindas)
         boasVindasText.text = "Seja bem-vindo $primeiroNome!"
+
+
+
+
     }
 }

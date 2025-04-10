@@ -1,11 +1,13 @@
 package com.KS.desconectagame.cadastro
 
+import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.view.MotionEvent
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.KS.desconectagame.R
 import com.KS.desconectagame.Usuario.DesconectaBD
@@ -15,6 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 class CadastroActivity : AppCompatActivity() {
 
@@ -30,6 +33,7 @@ class CadastroActivity : AppCompatActivity() {
     private var senhaVisivel = false
     private var senhaCVisivel = false
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cadastro)
@@ -96,6 +100,7 @@ class CadastroActivity : AppCompatActivity() {
             val emailConfirm = emailC.text.toString()
             val senhaText = senha.text.toString()
             val senhaConfirm = senhaC.text.toString()
+            val dataCadastro = LocalDate.now().toString()
 
             if (nomeText.isBlank() || idadeText.isBlank() || emailText.isBlank()
                 || emailConfirm.isBlank() || senhaText.isBlank() || senhaConfirm.isBlank()) {
@@ -128,7 +133,8 @@ class CadastroActivity : AppCompatActivity() {
                     nome = nomeText,
                     idade = idadeInt,
                     email = emailText,
-                    senha = senhaCriptografada
+                    senha = senhaCriptografada,
+                    dataCadastro = dataCadastro
                 )
 
                 db.usuarioDao().inserir(novoUsuario)
@@ -141,6 +147,7 @@ class CadastroActivity : AppCompatActivity() {
                     "email" to emailText,
                     "senha_original" to senhaText,
                     "senha_criptografada" to senhaCriptografada
+
                 )
 
 

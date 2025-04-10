@@ -10,5 +10,6 @@ data class Usuario(
     var nome: String,
     var email: String,
     var idade: Int,
-    var senha: String
+    var senha: String,
+    val dataCadastro: String
 )

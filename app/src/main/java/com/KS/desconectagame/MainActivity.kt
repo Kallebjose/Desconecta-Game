@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         db = DesconectaBD.getDatabase(this)
         usuarioDao = db.usuarioDao()
 
-        // Lógica para mostrar/ocultar senha
+        //  mostrar/ocultar senha
         senhaEdit.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 val drawableEndIndex = 2 // posição do drawableEnd
